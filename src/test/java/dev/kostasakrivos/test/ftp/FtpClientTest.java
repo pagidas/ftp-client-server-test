@@ -1,16 +1,20 @@
 package dev.kostasakrivos.test.ftp;
 
-import java.io.IOException;
-
 import org.apache.commons.net.ftp.FTPClientConfig;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import org.mockftpserver.fake.filesystem.FileEntry;
 import org.mockftpserver.fake.filesystem.FileSystem;
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem;
 import org.mockftpserver.fake.filesystem.DirectoryEntry;
 import org.mockftpserver.fake.FakeFtpServer;
 import org.mockftpserver.fake.UserAccount;
+
+import java.io.IOException;
+import java.util.Collection;
+
+import static junit.framework.TestCase.assertTrue;
 
 
 public class FtpClientTest {
@@ -53,5 +57,11 @@ public class FtpClientTest {
 
         // Shutting down the FTP server...
         fakeFtpServer.stop();
+    }
+
+    @Test
+    public void testListFiles() throws IOException {
+        Collection<String> files = ftpClient.listFiles("");
+        assertTrue(files.contains("temp-ftp-file.txt"));
     }
 }
