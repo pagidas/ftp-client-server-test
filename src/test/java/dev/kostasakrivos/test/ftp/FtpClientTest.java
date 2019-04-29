@@ -12,9 +12,14 @@ import org.mockftpserver.fake.FakeFtpServer;
 import org.mockftpserver.fake.UserAccount;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 
-import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
 
 public class FtpClientTest {
@@ -33,7 +38,7 @@ public class FtpClientTest {
         // Initializing a "UNIX" file system into the mock FTP server...
         FileSystem fileSystem = new UnixFakeFileSystem();
         fileSystem.add(new DirectoryEntry("/data"));
-        fileSystem.add(new FileEntry("/data/temp-ftp-file.txt", "hello ftp client-server!"));
+        fileSystem.add(new FileEntry("/data/temp_ftp_file.txt", "hello ftp client-server!"));
 
         // Setting the name and the file system...
         fakeFtpServer.setSystemName(FTPClientConfig.SYST_UNIX);
@@ -62,6 +67,13 @@ public class FtpClientTest {
     @Test
     public void testListFiles() throws IOException {
         Collection<String> files = ftpClient.listFiles("");
-        assertTrue(files.contains("temp-ftp-file.txt"));
+        assertThat(files, hasItem("temp_ftp_file.txt"));
+    }
+
+    @Test
+    public void testDownloadFile() throws IOException {
+        ftpClient.downloadFile("temp_ftp_file.txt", "temp-data/downloaded_temp_ftp_file.txt");
+        Path downloadedFilePath = Paths.get("temp-data/downloaded_temp_ftp_file.txt");
+        assertThat(Files.exists(downloadedFilePath, LinkOption.NOFOLLOW_LINKS), is(true));
     }
 }

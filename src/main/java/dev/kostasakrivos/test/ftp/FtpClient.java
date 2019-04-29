@@ -4,6 +4,8 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.PrintCommandListener;
+
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.String;
@@ -64,4 +66,8 @@ public class FtpClient {
                 .collect(Collectors.toList());
     }
 
+    public void downloadFile(String source, String destination) throws IOException {
+        FileOutputStream out = new FileOutputStream(destination);
+        ftp.retrieveFile(source, out);
+    }
 }
