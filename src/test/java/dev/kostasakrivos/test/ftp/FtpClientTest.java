@@ -11,7 +11,9 @@ import org.mockftpserver.fake.filesystem.DirectoryEntry;
 import org.mockftpserver.fake.FakeFtpServer;
 import org.mockftpserver.fake.UserAccount;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -75,5 +77,12 @@ public class FtpClientTest {
         ftpClient.downloadFile("temp_ftp_file.txt", "temp-data/downloaded_temp_ftp_file.txt");
         Path downloadedFilePath = Paths.get("temp-data/downloaded_temp_ftp_file.txt");
         assertThat(Files.exists(downloadedFilePath, LinkOption.NOFOLLOW_LINKS), is(true));
+    }
+
+    @Test
+    public void testUploadFile() throws IOException, URISyntaxException {
+        File file = new File("temp-data/file_to_upload.txt");
+        ftpClient.uploadFile(file, "/file_to_upload.txt");
+        assertThat(fakeFtpServer.getFileSystem().exists("/file_to_upload.txt"), is(true));
     }
 }
