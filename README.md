@@ -79,7 +79,7 @@ This a test by itself:
 
 And after all tests, **@After** is executed which closes the client and the server.
 
-An example of a **@Test** is written as follows:
+At this time, only one **@Test** is written:
 
 ```java
 public class FtpClientTest {
