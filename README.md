@@ -58,7 +58,7 @@ and compile the source code
 
 ## Running the Tests
 
-Test are run using maven's maven's _**phase**_ with the
+Test are run using maven's _**phase**_ with the
 help of **JUnit** framework
 
 ```shelll
